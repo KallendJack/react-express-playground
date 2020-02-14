@@ -1,23 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import AuthContext from '../context/auth/authContext'
 
 const Register = () => {
-  const [name, setName] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const authContext = useContext(AuthContext)
+  const { register, error, clearErrors } = authContext
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: ''
+  })
+
+  useEffect(() => {
+    if (error === 'User already exists') {
+      alert(error)
+      clearErrors()
+    }
+  }, [error])
+
+  const { name, email, password } = user
 
   const onChange = e => {
-    e.target.name === 'name'
-      ? setName(e.target.value)
-      : e.target.name === 'username'
-      ? setUsername(e.target.value)
-      : setPassword(e.target.value)
+    setUser({ ...user, [e.target.name]: e.target.value })
   }
 
   const onSubmit = async e => {
     e.preventDefault()
-    console.log(name)
-    console.log(username)
-    console.log(password)
+
+    register({
+      name,
+      email,
+      password
+    })
   }
 
   return (
@@ -35,14 +48,14 @@ const Register = () => {
         />
       </div>
       <div className="py-3">
-        <label htmlFor="username" className="block font-bold text-lg mb-1">
-          Username
+        <label htmlFor="email" className="block font-bold text-lg mb-1">
+          Email
         </label>
         <input
           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
           type="text"
-          name="username"
-          value={username}
+          name="email"
+          value={email}
           onChange={onChange}
         />
       </div>
