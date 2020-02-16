@@ -1,12 +1,16 @@
 import React, { useContext, useEffect } from 'react'
 import PostContext from '../context/post/postContext'
+import AuthContext from '../context/auth/authContext'
 import { Link } from 'react-router-dom'
 
 const Index = () => {
   const postContext = useContext(PostContext)
+  const authContext = useContext(AuthContext)
   const { posts, loading, getPosts } = postContext
+  const { loadUser } = authContext
 
   useEffect(() => {
+    loadUser()
     getPosts()
     // eslint-disable-next-line
   }, [])

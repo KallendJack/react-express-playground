@@ -10,6 +10,11 @@ import Register from './pages/Register'
 
 import PostState from './context/post/PostState'
 import AuthState from './context/auth/AuthState'
+import setAuthToken from './utils/setAuthToken'
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token)
+}
 
 const App = () => {
   return (

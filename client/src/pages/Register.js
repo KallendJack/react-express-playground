@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
 import AuthContext from '../context/auth/authContext'
 
-const Register = () => {
+const Register = props => {
   const authContext = useContext(AuthContext)
-  const { register, error, clearErrors } = authContext
+  const { register, error, clearErrors, isAuthenticated } = authContext
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -11,11 +11,15 @@ const Register = () => {
   })
 
   useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/posts')
+    }
+
     if (error === 'User already exists') {
       alert(error)
       clearErrors()
     }
-  }, [error])
+  }, [error, isAuthenticated, props.history])
 
   const { name, email, password } = user
 
