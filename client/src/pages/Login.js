@@ -1,33 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import AuthContext from '../context/auth/authContext'
 
-const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const Login = props => {
+  const authContext = useContext(AuthContext)
+  const { login, error, clearErrors, isAuthenticated } = authContext
+  const [user, setUser] = useState({
+    email: '',
+    password: ''
+  })
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/posts')
+    }
+
+    if (error === 'Invalid Credentials') {
+      alert(error)
+      clearErrors()
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history])
+
+  const { email, password } = user
 
   const onChange = e => {
-    e.target.name === 'username'
-      ? setUsername(e.target.value)
-      : setPassword(e.target.value)
+    setUser({ ...user, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault()
-    console.log(username)
-    console.log(password)
+
+    login({
+      email,
+      password
+    })
   }
 
   return (
     <form onSubmit={onSubmit} className="max-w-md m-auto mt-12 p-5 shadow-lg">
       <div className="py-3">
-        <label htmlFor="username" className="block font-bold text-lg mb-1">
-          Username
+        <label htmlFor="email" className="block font-bold text-lg mb-1">
+          Email
         </label>
         <input
           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
           type="text"
-          name="username"
-          value={username}
+          name="email"
+          value={email}
           onChange={onChange}
+          required
         />
       </div>
       <div className="py-3">
@@ -40,6 +61,7 @@ const Login = () => {
           name="password"
           value={password}
           onChange={onChange}
+          required
         />
       </div>
       <button className="bg-teal-300 hover:bg-teal-400 text-teal-800 font-bold py-2 px-4 rounded-l">

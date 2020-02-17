@@ -1,7 +1,39 @@
-import React from 'react'
+import React, { useContext, Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../context/auth/authContext'
 
 const Header = () => {
+  const authContext = useContext(AuthContext)
+  const { isAuthenticated, logout, user } = authContext
+
+  const guestLinks = (
+    <Fragment>
+      <li className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <Link to="/login">Login</Link>
+      </li>
+      <li className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <Link to="/register">Register</Link>
+      </li>
+    </Fragment>
+  )
+
+  const authLinks = (
+    <Fragment>
+      <li className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <Link to="/posts">Posts</Link>
+      </li>
+      <li className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <Link to="/add">Add Post</Link>
+      </li>
+      <li
+        onClick={logout}
+        className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+      >
+        <button>Logout</button>
+      </li>
+    </Fragment>
+  )
+
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -15,7 +47,7 @@ const Header = () => {
           <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
         </svg>
         <span className="font-semibold text-xl tracking-tight">
-          React Playground
+          {isAuthenticated ? user && user.name : 'Guest'}
         </span>
       </div>
       <div className="block lg:hidden">
@@ -31,32 +63,9 @@ const Header = () => {
         </button>
       </div>
       <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div className="text-sm lg:flex-grow">
-          <Link
-            to="/login"
-            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            Register
-          </Link>
-          <Link
-            to="/posts"
-            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            Posts
-          </Link>
-          <Link
-            to="/add"
-            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            Add Post
-          </Link>
-        </div>
+        <ul className="text-sm lg:flex-grow">
+          {isAuthenticated ? authLinks : guestLinks}
+        </ul>
       </div>
     </nav>
   )

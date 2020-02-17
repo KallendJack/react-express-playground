@@ -19,6 +19,7 @@ const Register = props => {
       alert(error)
       clearErrors()
     }
+    // eslint-disable-next-line
   }, [error, isAuthenticated, props.history])
 
   const { name, email, password } = user
@@ -27,7 +28,7 @@ const Register = props => {
     setUser({ ...user, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault()
 
     register({
@@ -49,6 +50,7 @@ const Register = props => {
           name="name"
           value={name}
           onChange={onChange}
+          required
         />
       </div>
       <div className="py-3">
@@ -61,6 +63,7 @@ const Register = props => {
           name="email"
           value={email}
           onChange={onChange}
+          required
         />
       </div>
       <div className="py-3">
@@ -73,6 +76,7 @@ const Register = props => {
           name="password"
           value={password}
           onChange={onChange}
+          required
         />
       </div>
       <button className="bg-teal-300 hover:bg-teal-400 text-teal-800 font-bold py-2 px-4 rounded-l">
