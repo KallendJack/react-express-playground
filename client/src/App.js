@@ -7,6 +7,7 @@ import AddPost from './pages/AddPost'
 import Post from './pages/Post'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import PrivateRoute from './routing/PrivateRoute'
 
 import PostState from './context/post/PostState'
 import AuthState from './context/auth/AuthState'
@@ -24,9 +25,9 @@ const App = () => {
           <Header />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/posts" component={Posts} />
-          <Route exact path="/add" component={AddPost} />
-          <Route exact path="/posts/:id" component={Post} />
+          <PrivateRoute exact path="/posts" component={Posts} />
+          <PrivateRoute exact path="/add" component={AddPost} />
+          <PrivateRoute exact path="/posts/:id" component={Post} />
         </Router>
       </PostState>
     </AuthState>

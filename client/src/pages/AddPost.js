@@ -1,12 +1,20 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import PostContext from '../context/post/postContext'
+import AuthContext from '../context/auth/authContext'
 import uuid from 'uuid'
 
 const Add = props => {
   const postContext = useContext(PostContext)
+  const authContext = useContext(AuthContext)
   const { addPost } = postContext
+  const { loadUser } = authContext
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+
+  useEffect(() => {
+    loadUser()
+    // eslint-disable-next-line
+  }, [])
 
   const onChange = e => {
     e.target.name === 'title'

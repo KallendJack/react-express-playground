@@ -1,11 +1,15 @@
 import React, { useContext, useEffect } from 'react'
 import PostContext from '../context/post/postContext'
+import AuthContext from '../context/auth/authContext'
 
 const View = props => {
   const postContext = useContext(PostContext)
+  const authContext = useContext(AuthContext)
   const { post, loading, getPost, deletePost } = postContext
+  const { loadUser } = authContext
 
   useEffect(() => {
+    loadUser()
     getPost(props.match.params.id)
     // eslint-disable-next-line
   }, [])
